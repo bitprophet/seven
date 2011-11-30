@@ -18,6 +18,13 @@ Grid set := method(x, y, value,
 Grid get := method(x, y,
     self grid at(x) at(y)
 )
+Grid save := method(path,
+    file := File clone openForUpdating(path)
+    self grid foreach(x,
+        joined := x join(" ")
+        file write("#{joined}\n" interpolate)
+    )
+)
 
 Grid dim(2, 5)
 Grid grid println
@@ -25,3 +32,5 @@ Grid grid println
 Grid set(1, 2, "lol")
 Grid grid println
 Grid get(1, 2) println
+
+Grid save("/tmp/lol")
