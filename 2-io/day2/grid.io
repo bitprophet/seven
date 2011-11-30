@@ -25,12 +25,31 @@ Grid save := method(path,
         file write("#{joined}\n" interpolate)
     )
 )
+Grid load := method(path,
+    file := File openForReading(path)
+    file readLines foreach(y, row,
+        row split foreach(x, value,
+            # get/set start at 1
+            x = x + 1
+            y = y + 1
+            "set(#{x}, #{y})" interpolate println
+            self set(x, y, value)
+        )
+    )
+)
 
-Grid dim(2, 5)
-Grid grid println
+myGrid := Grid clone
+myGrid dim(2, 5)
+myGrid grid println
 
-Grid set(1, 2, "lol")
-Grid grid println
-Grid get(1, 2) println
+myGrid set(1, 2, "lol")
+myGrid grid println
+myGrid get(1, 2) println
 
-Grid save("/tmp/lol")
+myGrid save("/tmp/lol")
+
+newGrid := Grid clone
+newGrid dim(2, 5)
+newGrid grid println
+newGrid load("/tmp/lol")
+newGrid grid println
